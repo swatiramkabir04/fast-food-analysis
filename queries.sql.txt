@@ -1,0 +1,96 @@
+-- Total Food Items per Restaurant
+
+SELECT restaurant, COUNT(item) AS total_items
+FROM food
+GROUP BY restaurant
+ORDER BY total_items DESC;
+
+
+-- Average Calories per Restaurant
+
+SELECT restaurant, AVG(calories) AS avg_calories
+FROM food
+GROUP BY restaurant
+ORDER BY avg_calories DESC;
+
+-- Top 10 Highest Calorie Food Items
+
+SELECT item, restaurant, calories
+FROM food
+ORDER BY calories DESC
+LIMIT 10;
+
+ -- High Protein Food Items
+ 
+ -- 1 Which food item has the highest calories in each restaurant?
+ 
+ SELECT restaurant, item, calories
+FROM food f
+WHERE calories = (
+    SELECT MAX(calories)
+    FROM food
+    WHERE restaurant = f.restaurant
+);
+
+-- 2 Which food items have calories higher than the average calories of their restaurant?
+
+SELECT restaurant, item, calories
+FROM food f
+WHERE calories > (
+    SELECT AVG(calories)
+    FROM food
+    WHERE restaurant = f.restaurant
+);
+
+
+-- Which restaurants provide the highest average protein content in their menu?
+
+SELECT restaurant, AVG(CAST(protein AS UNSIGNED)) AS avg_protein
+FROM food
+GROUP BY restaurant
+ORDER BY avg_protein DESC;
+
+-- Which food items have high protein but low fat
+
+SELECT item, restaurant, protein, total_fat
+FROM food
+WHERE CAST(protein AS UNSIGNED) > 20
+AND total_fat < 10;
+
+-- Which restaurants serve the highest average sugar content in their food items?
+
+SELECT restaurant, AVG(sugar) AS avg_sugar
+FROM food
+GROUP BY restaurant
+ORDER BY avg_sugar DESC;
+
+-- Which food items have the highest protein density (protein per calorie)?
+
+SELECT item, restaurant,
+(CAST(protein AS UNSIGNED) / calories) AS protein_density
+FROM food
+ORDER BY protein_density DESC
+LIMIT 10;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
